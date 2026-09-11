@@ -1,3 +1,4 @@
+import shlex
 import os
 
 banner = """
@@ -13,17 +14,26 @@ while True:
 
     if not command:
         continue
+    try:
+        command = shlex.split(command)#split() break the compond words into the single words
+    except ValueError:
+        print("Error: Invalid command syntax.")
+        continue
+    cmd = command[0].lower()
+    args=command[1:]
 
-    if command == "exit":
+    if cmd == "exit":
         print("Exiting the shell...")
         break 
-        print(f"Command received: {command}")
-    elif command == "clear":
+    elif cmd == "clear":
         os.system('cls' if os.name == 'nt' else 'clear')
         print(banner)
-    elif command == "help":
+    elif cmd == "help":
         print("Available commands:")
         print("  help  - Show this help message")
         print("  clear - Clear the terminal screen")
         print("  exit  - Exit the shell")
+    else:
+        print(f"Unknown command received: {cmd} (Arguments:{args})")
+
     
